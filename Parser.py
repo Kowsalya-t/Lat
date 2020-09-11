@@ -8,14 +8,9 @@ def get_random_string(length):
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
-def main():
-    numOfRecs = input("Enter number of records to generate : ")
-    headerList = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
-    colLengthList = [5, 12, 3, 2, 13, 7, 10, 13, 20, 13]
-    fixedLengthFile = open("myFixedLengthFile.txt", "w")
+def generate_fixed_file(numOfRecs,colLengthList,fixedLengthFileName):
     index = 0
-    dataset = []
-    dataset.append(headerList)
+    fixedLengthFile = open(fixedLengthFileName, "w")
     while index < int(numOfRecs):
         line = ''
         for i in range(0,10):
@@ -26,13 +21,14 @@ def main():
         index = index + 1
     fixedLengthFile.close()
 
+def generate_csv_file(dataset,fixedLengthFileName,csvFileName):
     index = 0
-    fixedLengthFile = open("myFixedLengthFile.txt","r")
+    fixedLengthFile = open(fixedLengthFileName, "r")
     fixedLenghtFileLine = fixedLengthFile.readlines()
 
     for record in fixedLenghtFileLine:
         dataset.append(record.split())
-    fileOutput = 'csv_file_parsed.csv'
+    fileOutput = csvFileName
     try:
         with open(fileOutput, 'w', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -40,6 +36,20 @@ def main():
     except IOError:
         print("I/O error :", sys.exc_info())
 
+def main():
+    numOfRecs = input("Enter number of records to generate : ")
+
+    #Define Header and column length
+    headerList = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'f8', 'f9', 'f10']
+    colLengthList = [5, 12, 3, 2, 13, 7, 10, 13, 20, 13]
+
+    dataset = []
+    dataset.append(headerList)
+    fixedLengthFileName = "myFixedLengthFile.txt"
+    csvFileName = 'csv_file_parsed.csv'
+
+    generate_fixed_file(numOfRecs,colLengthList,fixedLengthFileName )
+    generate_csv_file(dataset,fixedLengthFileName,csvFileName)
+
 if __name__ == "__main__":
     main()
-
